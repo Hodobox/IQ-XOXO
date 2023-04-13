@@ -1,47 +1,29 @@
-from iq_xoxo.constants import PuzzlePieceEnum
+from iq_xoxo.constants import (
+    LINE_PIECE_ART,
+    T_PIECE_ART,
+    U_PIECE_ART,
+    L_PIECE_ART,
+    Z_PIECE_ART,
+    P_PIECE_ART,
+    W_PIECE_ART,
+    CORNER_PIECE_ART,
+    POINTING_PIECE_ART,
+    WAVING_PIECE_ART,
+)
 
 from iq_xoxo.puzzle_piece import PuzzlePiece
 
-line_piece_art = ["XOXOX"]
-LINE_PIECE = PuzzlePiece.from_ascii(PuzzlePieceEnum.LINE_PIECE, line_piece_art)
 
-t_piece_art = ["XOX", ".X.", ".O."]
-T_PIECE = PuzzlePiece.from_ascii(PuzzlePieceEnum.T_PIECE, t_piece_art)
-
-u_piece_art = ["X.X", "OXO"]
-U_PIECE = PuzzlePiece.from_ascii(PuzzlePieceEnum.U_PIECE, u_piece_art)
-
-l_piece_art = [
-    "X.",
-    "O.",
-    "X.",
-    "OX",
-]
-L_PIECE = PuzzlePiece.from_ascii(PuzzlePieceEnum.L_PIECE, l_piece_art)
-
-z_piece_art = [
-    ".XO",
-    ".O",
-    "OX",
-]
-Z_PIECE = PuzzlePiece.from_ascii(PuzzlePieceEnum.Z_PIECE, z_piece_art)
-
-p_piece_art = ["XO", "OX", "X."]
-P_PIECE = PuzzlePiece.from_ascii(PuzzlePieceEnum.P_PIECE, p_piece_art)
-
-w_piece_art = ["X..", "OX.", ".OX,"]
-W_PIECE = PuzzlePiece.from_ascii(PuzzlePieceEnum.W_PIECE, w_piece_art)
-
-corner_piece_art = ["X..", "O..", "XOX"]
-CORNER_PIECE = PuzzlePiece.from_ascii(PuzzlePieceEnum.CORNER_PIECE, corner_piece_art)
-
-pointing_piece_art = ["X.", "OX", "X.", "O."]
-POINTING_PIECE = PuzzlePiece.from_ascii(
-    PuzzlePieceEnum.POINTING_PIECE, pointing_piece_art
-)
-
-waving_piece_art = [".O", "OX", "X.", "O."]
-WAVING_PIECE = PuzzlePiece.from_ascii(PuzzlePieceEnum.WAVING_PIECE, waving_piece_art)
+LINE_PIECE = PuzzlePiece.from_ascii(LINE_PIECE_ART)
+T_PIECE = PuzzlePiece.from_ascii(T_PIECE_ART)
+U_PIECE = PuzzlePiece.from_ascii(U_PIECE_ART)
+L_PIECE = PuzzlePiece.from_ascii(L_PIECE_ART)
+Z_PIECE = PuzzlePiece.from_ascii(Z_PIECE_ART)
+P_PIECE = PuzzlePiece.from_ascii(P_PIECE_ART)
+W_PIECE = PuzzlePiece.from_ascii(W_PIECE_ART)
+CORNER_PIECE = PuzzlePiece.from_ascii(CORNER_PIECE_ART)
+POINTING_PIECE = PuzzlePiece.from_ascii(POINTING_PIECE_ART)
+WAVING_PIECE = PuzzlePiece.from_ascii(WAVING_PIECE_ART)
 
 PUZZLE_PIECES = [
     LINE_PIECE,
