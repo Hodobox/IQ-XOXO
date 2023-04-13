@@ -2,6 +2,8 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import List, Set, Tuple
 
+from iq_xoxo.constants import BOARD_WIDTH, PUZZLE_PIECE_NAMES, PuzzlePieceEnum
+
 
 @dataclass
 class PuzzlePieceSquare:
@@ -11,12 +13,12 @@ class PuzzlePieceSquare:
 
 
 class PuzzlePiece:
-    def __init__(self, name: str, squares: List[PuzzlePieceSquare]):
+    def __init__(self, type: PuzzlePieceEnum, squares: List[PuzzlePieceSquare]):
         self.squares = squares
-        self.name = name
+        self.type = type
 
     @classmethod
-    def from_ascii(cls, name: str, ascii: List[str]) -> "PuzzlePiece":
+    def from_ascii(cls, type: PuzzlePieceEnum, ascii: List[str]) -> "PuzzlePiece":
         squares: List[PuzzlePieceSquare] = []
 
         for y, row in enumerate(ascii[::-1]):
@@ -24,7 +26,7 @@ class PuzzlePiece:
                 if c in "XO":
                     squares.append(PuzzlePieceSquare(x, y, c == "X"))
 
-        return PuzzlePiece(name, squares)
+        return PuzzlePiece(type, squares)
 
     def to_ascii(self) -> List[str]:
         R = max([s.y for s in self.squares]) + 1
@@ -36,8 +38,13 @@ class PuzzlePiece:
 
         return ["".join(row) for row in ascii[::-1]]
 
+    # TODO: from_bitmask (needs to infer type)
+
+    def to_bitmask(self) -> int:
+        return sum([1 << (BOARD_WIDTH * s.x + s.y) for s in self.squares])
+
     def __str__(self) -> str:
-        return f"{self.name}\n" + "\n".join(self.to_ascii())
+        return f"{PUZZLE_PIECE_NAMES[self.type]}\n" + "\n".join(self.to_ascii())
 
     def __repr__(self) -> str:
         return self.__class__.__name__ + "\n" + self.__str__()
@@ -47,7 +54,7 @@ class PuzzlePiece:
         miny = min([s.y for s in rotated_squares])
         for s in rotated_squares:
             s.y -= miny
-        return PuzzlePiece(self.name, rotated_squares)
+        return PuzzlePiece(self.type, rotated_squares)
 
     def _get_flipped(self) -> "PuzzlePiece":
         flipped_squares = [
@@ -56,7 +63,19 @@ class PuzzlePiece:
         minx = min([s.x for s in flipped_squares])
         for s in flipped_squares:
             s.x += -minx
-        return PuzzlePiece(self.name, flipped_squares)
+        return PuzzlePiece(self.type, flipped_squares)
+
+    def get_shifted(self, dx: int, dy: int) -> "PuzzlePiece":
+        return PuzzlePiece(
+            self.type,
+            [PuzzlePieceSquare(s.x + dx, s.y + dy, s.symbol) for s in self.squares],
+        )
+
+    def max_x(self):
+        return max([s.x for s in self.squares])
+
+    def max_y(self):
+        return max([s.y for s in self.squares])
 
     def get_variations(self) -> "List[PuzzlePiece]":
         variations: List[PuzzlePiece] = []
