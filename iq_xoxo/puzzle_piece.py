@@ -54,7 +54,7 @@ def squares_to_ascii_art(squares: List[PuzzlePieceSquare]) -> List[str]:
 
 
 def squares_to_bitmask(squares: List[PuzzlePieceSquare]) -> int:
-    return sum([1 << (BOARD_WIDTH * s.x + s.y) for s in squares])
+    return sum([1 << (BOARD_WIDTH * s.y + s.x) for s in squares])
 
 
 def squares_from_bitmask(mask: int) -> List[PuzzlePieceSquare]:

@@ -36,6 +36,19 @@ PUZZLE_PIECE_NAMES = {
     PuzzlePieceType.WAVING_PIECE: "WAVING_PIECE",
 }
 
+PUZZLE_PIECE_CHARS = {
+    PuzzlePieceType.LINE_PIECE: "=",
+    PuzzlePieceType.T_PIECE: "T",
+    PuzzlePieceType.U_PIECE: "U",
+    PuzzlePieceType.L_PIECE: "L",
+    PuzzlePieceType.Z_PIECE: "Z",
+    PuzzlePieceType.P_PIECE: "P",
+    PuzzlePieceType.W_PIECE: "W",
+    PuzzlePieceType.CORNER_PIECE: "C",
+    PuzzlePieceType.POINTING_PIECE: "X",
+    PuzzlePieceType.WAVING_PIECE: "Y",
+}
+
 
 LINE_PIECE_ART = ["XOXOX"]
 T_PIECE_ART = ["XOX", ".X.", ".O."]

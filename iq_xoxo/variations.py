@@ -29,4 +29,6 @@ for piece, variations in VARIATIONS.items():
                 mask = shifted.to_bitmask()
 
                 for s in shifted.squares:
-                    POSSIBLE_PLACEMENT_MASKS[shifted.type.value][s.x][s.y].append(mask)
+                    POSSIBLE_PLACEMENT_MASKS[int(shifted.type.value)][s.x][s.y].append(
+                        mask
+                    )

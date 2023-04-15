@@ -1,6 +1,10 @@
-from typing import List, Tuple
-from iq_xoxo.constants import PuzzlePieceType
-from iq_xoxo.puzzle_piece import PuzzlePiece
+from typing import Dict, List
+from iq_xoxo.constants import (
+    BOARD_HEIGHT,
+    BOARD_WIDTH,
+    PUZZLE_PIECE_CHARS,
+)
+from iq_xoxo.puzzle_piece import PuzzlePiece, PuzzlePieceSquare, squares_to_bitmask
 from functools import reduce
 
 
@@ -18,5 +22,45 @@ class Board:
 
     @classmethod
     def from_ascii(cls, ascii: List[str]) -> "Board":
-        # TODO
-        raise NotImplementedError()
+        if len(ascii) != BOARD_HEIGHT:
+            raise ValueError(
+                f"Board must have {BOARD_HEIGHT} rows, input has {len(ascii)}"
+            )
+
+        same_char: Dict[str, List[PuzzlePieceSquare]] = {}
+
+        for y, row in enumerate(ascii[::-1]):
+            if len(row) != BOARD_WIDTH:
+                raise ValueError(
+                    f"Board must have {BOARD_HEIGHT} columns, a row in the input has {len(row)}"
+                )
+
+            for x, c in enumerate(row):
+                if c not in same_char:
+                    same_char[c] = []
+
+                same_char[c].append(
+                    PuzzlePieceSquare(x, y, True if (x + y + 1) % 2 else False)
+                )
+
+        pieces: List[PuzzlePiece] = []
+        for char, squares in same_char.items():
+            if char == ".":
+                continue
+
+            piece = PuzzlePiece(squares)
+            pieces.append(piece)
+
+        return Board(pieces)
+
+    def to_acii(self) -> List[str]:
+        res = [["." for _ in range(BOARD_WIDTH)] for _ in range(BOARD_HEIGHT)]
+        for piece_mask in self.masks:
+            piece = PuzzlePiece.from_bitmask(piece_mask)
+            for square in piece.squares:
+                res[square.y][square.x] = PUZZLE_PIECE_CHARS[piece.type]
+
+        return ["".join(row) for row in res][::-1]
+
+    def __str__(self) -> str:
+        return "\n".join(self.to_acii())
