@@ -1,60 +1,85 @@
-from iq_xoxo.board import Board
+from argparse import ArgumentParser
+from copy import deepcopy
+
+from iq_xoxo.board import BOARD_56, Board
+from iq_xoxo.concrete_pieces import PUZZLE_PIECES
 from iq_xoxo.solve import solve
 
-puzzle001 = [
-    "ZZUUUW....",
-    "CZUTUWW...",
-    "CZZTTTWW..",
-    "CCCTXXXX.L",
-    "=====XLLLL",
-]
+parser = ArgumentParser(
+    prog="IQ-XOXO solver",
+    description="Helps you solve the IQ-XOXO puzzle game",
+    epilog="Is there anything else you'd want this project to do? Make an issue or submit a PR at https://github.com/Hodobox/IQ-XOXO",
+)
 
-puzzle025 = [
-    ".XXXX.....",
-    "..X=====..",
-    "...TPPZZ..",
-    ".TTTPPZ...",
-    "...TPZZ...",
-]
+usage_example = (
+    "python3 main.py path-to-puzzle [-l, --list] [-n, --next]\n"
+    "puzzle should be a file with the puzzle input in ascii art, like so:\n"
+    + str(BOARD_56)
+    + "\n"
+    + "the . character is an empty square. Same letters should represent one puzzle piece.\n"
+    + "pass the -l/--list option to list ASCII arts for convenience\n"
+    + "pass the -n/--next option to show where the next piece should be placed in the puzzle"
+)
 
-puzzle072 = [
-    "..........",
-    "..........",
-    "CZ........",
-    "CZZZPPP...",
-    "CCCZPP....",
-]
-
-puzzle086 = [
-    "..........",
-    "..........",
-    "..........",
-    "......L...",
-    ".=====LLLL",
-]
-
-puzzle110 = [
-    ".=====....",
-    "..........",
-    "..........",
-    "..........",
-    "..........",
-]
-
-from time import time
+parser.usage = (parser.usage or "") + usage_example
 
 
-board = Board.from_ascii(puzzle110)
+parser.add_argument(
+    "puzzle", type=str, help="Path to file with ascii art of the puzzle"
+)
 
+parser.add_argument(
+    "-l", "--list", action="store_true", help="List ascii art of board and pieces"
+)
+parser.add_argument(
+    "-n",
+    "--next",
+    action="store_true",
+    help="Show where the next puzzle piece should be placed",
+)
 
-print(board)
+args = parser.parse_args()
 
-print()
+print(f"Welcome to {parser.prog}")
 
-s = time()
+if args.list:
+    print("Printing ascii arts:")
+    print(Board())
+    for piece in PUZZLE_PIECES:
+        print(piece)
+
+with open(args.puzzle, "r") as puzzle_file:
+    puzzle = [l.strip() for l in puzzle_file.readlines()]
+
+try:
+    board = Board.from_ascii(puzzle)
+except Exception as e:
+    print("Something went wrong when loading the puzzle input you provided:")
+    print(e)
+    exit()
+
+print("Your puzzle was successfuly loaded!")
+print("Solving...")
 solution = solve(board)
-e = time()
+print("Finished solving")
 
-print(solution)
+if solution is None:
+    print("The puzzle arrangement you provided has no solution!")
+    exit()
 
-print(f"{e - s:.3f} seconds")
+print("The puzzle arrangement you provided has a valid solution.")
+
+if args.next:
+
+    if len(board.pieces_used) != len(PUZZLE_PIECES):
+
+        board_with_next_piece = deepcopy(solution)
+        board_with_next_piece.masks = board_with_next_piece.masks[
+            : len(board.pieces_used) + 1
+        ]
+        board_with_next_piece.mask = sum(board_with_next_piece.masks)
+
+        print("Place your next piece like this:")
+        print(board_with_next_piece)
+    else:
+        print("The puzzle you provided already has all the pieces placed!")

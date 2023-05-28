@@ -2,14 +2,9 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import List, Optional, Set, Tuple
 
-from iq_xoxo.constants import (
-    BOARD_WIDTH,
-    NUM_BITS,
-    PUZZLE_PIECE_ARTS,
-    PUZZLE_PIECE_NAMES,
-    SQUARES_PER_PIECE,
-    PuzzlePieceType,
-)
+from iq_xoxo.constants import (BOARD_WIDTH, NUM_BITS, PUZZLE_PIECE_ARTS,
+                               PUZZLE_PIECE_NAMES, SQUARES_PER_PIECE,
+                               PuzzlePieceType)
 
 
 @dataclass
@@ -117,7 +112,7 @@ def infer_puzzle_piece_type_from_squares(
 ) -> PuzzlePieceType:
     if len(squares) != SQUARES_PER_PIECE:
         raise ValueError(
-            f"Puzzle piece must have {SQUARES_PER_PIECE} squares, has {len(squares)}"
+            f"Puzzle piece must have {SQUARES_PER_PIECE} squares, your piece has {len(squares)}"
         )
 
     squares = shift_squares(

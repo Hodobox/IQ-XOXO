@@ -1,7 +1,8 @@
 from typing import Dict, List
-from iq_xoxo.concrete_pieces import PUZZLE_PIECES
-from iq_xoxo.constants import BOARD_HEIGHT, BOARD_WIDTH, NUM_PIECES, PuzzlePieceType
 
+from iq_xoxo.concrete_pieces import PUZZLE_PIECES
+from iq_xoxo.constants import (BOARD_HEIGHT, BOARD_WIDTH, NUM_PIECES,
+                               PuzzlePieceType)
 from iq_xoxo.puzzle_piece import PuzzlePiece
 
 VARIATIONS: Dict[PuzzlePieceType, List[PuzzlePiece]] = {

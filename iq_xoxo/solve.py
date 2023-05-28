@@ -1,11 +1,9 @@
+from copy import deepcopy
 from typing import List, Optional, Tuple
+
 from iq_xoxo.board import Board
-from iq_xoxo.constants import (
-    BITMASK_FINISHED,
-    BOARD_HEIGHT,
-    BOARD_WIDTH,
-    PuzzlePieceType,
-)
+from iq_xoxo.constants import (BITMASK_FINISHED, BOARD_HEIGHT, BOARD_WIDTH,
+                               PuzzlePieceType)
 from iq_xoxo.variations import POSSIBLE_PLACEMENT_MASKS
 
 
@@ -67,6 +65,6 @@ def solve(board: Board) -> Optional[Board]:
         piece for piece in PuzzlePieceType if piece not in board.pieces_used
     ]
 
-    solution = _solve(board, pieces_to_go)
+    solution = _solve(deepcopy(board), pieces_to_go)
 
     return solution
