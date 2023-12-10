@@ -25,7 +25,7 @@ parser.usage = (parser.usage or "") + usage_example
 
 
 parser.add_argument(
-    "puzzle", type=str, help="Path to file with ascii art of the puzzle"
+    "puzzle", nargs='?', type=str, help="Path to file with ascii art of the puzzle",
 )
 
 parser.add_argument(
@@ -46,7 +46,17 @@ if args.list:
     print("Printing ascii arts:")
     print(Board())
     for piece in PUZZLE_PIECES:
-        print(piece)
+        s = str(piece)
+        label, nonlabel = s.split('\n')[0], s.split('\n')[1:]
+        nonlabel = [ line.replace('O','X') for line in nonlabel ]
+        print(label)
+        print('\n'.join(nonlabel))
+    exit(0)
+
+if args.puzzle is None:
+    print(parser.usage)
+    exit(0)
+
 
 with open(args.puzzle, "r") as puzzle_file:
     puzzle = [l.strip() for l in puzzle_file.readlines()]
